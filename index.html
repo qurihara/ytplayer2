@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta property="og:title" content="作業BGM用ドライブインパクトボタンつきYouTubeプレイヤー#2" />
+    <meta property="og:description" content="作業用BGMですが、時々ドライブインパクトで攻撃されます。インパクト返しで反応できるように鍛えましょう！ときどさんの「格ゲー研究室」でもご紹介いただいた、栗原研究室による格ゲーものづくりシリーズです。ストリートファイター6好きに贈ります。常在戦場！" />
+    <meta property="og:image" content="https://qurihara.github.io/ytplayer/cover.jpg" />
+    <meta property="og:url" content="https://qurihara.github.io/ytplayer2/" />
+    <meta property="og:type" content="website" />    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>インパクトボタンつきYouTubeプレイヤー#2 Ver.2.6</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            touch-action: none;
+            box-sizing: border-box; /* ボックスサイズの計算方法を変更 */
+        }
+        #player {
+            width: 100%;
+            height: 50vh;
+            touch-action: none;
+        }
+        #controlButton {
+            width: calc(100% - 20px); /* マージンを考慮した幅の計算 */
+            height: calc(50vh - 20px); /* マージンを考慮した高さの計算 */
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            font-size: 8vw;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: none;
+            -webkit-tap-highlight-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 0;
+            box-sizing: border-box; /* ボックスサイズの計算方法を変更 */
+        }
+        #controlButton:active {
+            background-color: #45a049;
+            transform: scale(0.98);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div id="player"></div>
+    <button id="controlButton">ドライブインパクトボタン</button>
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        var player;
+        function onYouTubeIframeAPIReady() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const videoId = urlParams.get('v') || 'TxnCwJmSV2M';  // デフォルト値を設定
+
+            player = new YT.Player('player', {
+                height: '100%',
+                width: '100%',
+                videoId: videoId,
+                events: {
+                    'onReady': onPlayerReady
+                },
+                playerVars: {
+                    'autoplay': 1,
+                    'controls': 1,
+                    'enablejsapi': 1,
+                    'fs': 1,
+                    'iv_load_policy': 3,
+                    'modestbranding': 1,
+                    'rel': 0,
+                    'showinfo': 0,
+                    'playsinline': 1,
+                    'disablekb': 1,
+                    'origin': window.location.origin,
+                    'widget_referrer': window.location.origin,
+                    'allow': 'autoplay',
+                    'allowfullscreen': 'true',
+                    'allowscriptaccess': 'always',
+                    'wmode': 'transparent'
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            const controlButton = document.getElementById('controlButton');
+            let isPlaying = false;
+            
+            controlButton.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                togglePlayPause();
+                // updateButtonText();
+            }, { passive: false });
+
+            controlButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                togglePlayPause();
+                // updateButtonText();
+            });
+
+            // function updateButtonText() {
+            //     isPlaying = !isPlaying;
+            //     controlButton.textContent = isPlaying ? 'Push to Continue' : 'Drive Impact';
+            // }
+        }        
+        function togglePlayPause() {
+            if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+                player.pauseVideo();
+            } else {
+                player.playVideo();
+            }
+        }
+    </script>
+</body>
+</html>
